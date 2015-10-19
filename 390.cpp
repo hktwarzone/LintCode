@@ -46,32 +46,43 @@ public:
         if (A.empty() || A[0].empty()) return res;
         int n = A.size();
         int m = A[0].size();
-        int i = 1;
-        int j = 1;
-        int dx[4] = {1,0,-1,0};
-        int dy[4] = {0,1,0,-1};
-        while(inBound(i, j, n, m)) {
-            int max = INT_MIN;
-            int maxindex = -1;
-            for (int k = 0; k < 4; k++) {
-                if (A[i + dx[k]][j + dy[k]] > max) {
-                    max = A[i + dx[k]][j + dy[k]];
-                    maxindex = k;
-                }
+        int left = 1;
+        int right = n - 2;
+        int local = 0;
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            local = findPeak(A[mid]);
+            if (A[mid][local] < A[mid - 1][local]) {
+                right = mid - 1;
             }
-            if (maxindex >= 0 && A[i][j] > A[i + dx[maxindex]][j + dy[maxindex]]) {
-                res.push_back(i);
-                res.push_back(j);
-                break;
+            else if (A[mid][local] < A[mid + 1][local]) {
+                left = mid + 1;
             }
-            else if (maxindex == -1) break;
-            i += dx[maxindex];
-            j += dy[maxindex];
+            else {
+                res.push_back(mid);
+                res.push_back(local);
+                return res;
+            }
         }
+        res.push_back(left);
+        res.push_back(findPeak(A[left]));
         return res;
     }
 private:
-    bool inBound(int x, int y, int& n, int& m) {
-        return (x > 0 && y > 0 && x < n - 1 && y < m - 1);
+    int findPeak(vector<int>& A) {
+        int m = A.size();
+        int left = 1;
+        int right = m - 2;
+        while(left < right) {
+            int mid = left + (right - left) / 2;
+            if (A[mid] < A[mid - 1]) {
+                right = mid - 1;
+            }
+            else if (A[mid] < A[mid + 1]) {
+                left = mid + 1;
+            }
+            else return mid;
+        }
+        return left;
     }
 };
