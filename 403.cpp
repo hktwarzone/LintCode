@@ -50,20 +50,15 @@ public:
                 minsum = sum;
                 resmin = {start, i};
             }
-        }        
-        if (total - minsum < maxsum) {
+        }   
+        if (total == minsum) {
             return resmax;
         }
-        else {
-            if (total == minsum) {
-                return resmax;
-            }
-            else {
-                vector<int> res;
-                res.push_back((resmin[1] + 1) % A.size());
-                res.push_back(resmin[0] == 0 ? A.size() - 1 : resmin[0] - 1);
-                return res;
-            }
+        else if (total - minsum <= maxsum) {
+            return resmax;
+        }
+        else { //do not need to handle boundary: if minsum is on the bourdary, total-minsum <= maxsum
+            return vector<int>{++resmin[1],--resmin[0]};
         }
     }
 };
