@@ -17,39 +17,38 @@ public:
      */
     vector<int> continuousSubarraySumII(vector<int>& A) {
         // Write your code here
+        vector<int> res;
+        if (A.empty()) return res;
         int start = 0;
-        int maxsum = INT_MIN;
-        int sum = 0;
+        int maxsum = A[0];
+        int sum = A[0];
+        int total = A[0];
         vector<int> resmax = {0, 0};
         vector<int> resmin = {0, 0};
-        for (int i = 0; i < A.size(); i++) {
+        for (int i = 1; i < A.size(); i++) {
             if (sum < 0) {
                 sum = 0;
                 start = i;
             }
             sum += A[i];
+            total += A[i];
             if (sum > maxsum) {
                 maxsum = sum;
-                resmax[0] = start;
-                resmax[1] = i;
+                resmax = {start, i};
             }
         }
-        
-        int minsum = INT_MAX;
-        sum = 0;
+        int minsum = A[0];
+        sum = A[0];
         start = 0;
-        int total = 0;
-        for (int i = 0; i < A.size(); i++) {
+        for (int i = 1; i < A.size(); i++) {
             if (sum > 0) {
                 sum = 0;
                 start = i;
             }
             sum += A[i];
-            total += A[i];
             if (sum < minsum) {
                 minsum = sum;
-                resmin[0] = start;
-                resmin[1] = i;
+                resmin = {start, i};
             }
         }        
         if (total - minsum < maxsum) {
